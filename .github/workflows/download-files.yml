@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -31,12 +33,16 @@ jobs:
       run: |
         curl -o hmac "${{ env.HMAC_URL }}"
 
-    - name: Commit and push changes
+    - name: Configure Git
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+    - name: Commit and push changes
+      run: |
         git add channels hmac
+        git status
         git diff --cached --exit-code || git commit -m "Update files from URLs"
-        git push
+        git push origin HEAD:${{ github.ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
