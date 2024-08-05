@@ -52,11 +52,13 @@ jobs:
     - name: Commit changes
       if: env.changes_detected == 'true'
       run: |
+        echo "Changes detected, committing..."
         git commit -m "Update files from URLs"
 
     - name: Push changes
       if: env.changes_detected == 'true'
       run: |
+        echo "Pushing changes..."
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
         git push origin HEAD:${{ github.ref }}
       env:
