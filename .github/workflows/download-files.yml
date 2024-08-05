@@ -9,6 +9,9 @@ jobs:
   download:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -53,7 +56,7 @@ jobs:
       if: env.changes_detected == 'true'
       run: |
         echo "Changes detected, committing..."
-        git commit -m "Update files from URLs"
+        git commit -m "Update files from URLs" || echo "No changes to commit"
 
     - name: Push changes
       if: env.changes_detected == 'true'
