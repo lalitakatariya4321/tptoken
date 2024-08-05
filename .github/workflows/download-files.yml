@@ -25,6 +25,10 @@ jobs:
         echo "CHANNELS_URL=https://fox.toxic-gang.xyz/tata/channels" >> $GITHUB_ENV
         echo "HMAC_URL=https://fox.toxic-gang.xyz/tata/hmac" >> $GITHUB_ENV
 
+    - name: Ensure files exist
+      run: |
+        touch channels hmac
+
     - name: Download CHANNELS_URL
       run: |
         curl -o channels "${{ env.CHANNELS_URL }}"
@@ -38,12 +42,22 @@ jobs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-    - name: Commit and push changes
+    - name: Check for changes
+      id: check_changes
       run: |
         git add channels hmac
         git status
-        git commit -m "Update files from URLs" || echo "No changes to commit"
-        git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        git diff --cached --exit-code || echo "changes_detected=true" >> $GITHUB_ENV
+
+    - name: Commit changes
+      if: env.changes_detected == 'true'
+      run: |
+        git commit -m "Update files from URLs"
+
+    - name: Push changes
+      if: env.changes_detected == 'true'
+      run: |
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
         git push origin HEAD:${{ github.ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
