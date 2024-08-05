@@ -42,7 +42,8 @@ jobs:
       run: |
         git add channels hmac
         git status
-        git diff --cached --exit-code || git commit -m "Update files from URLs"
+        git commit -m "Update files from URLs" || echo "No changes to commit"
+        git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
         git push origin HEAD:${{ github.ref }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
