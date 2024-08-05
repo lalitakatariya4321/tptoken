@@ -20,20 +20,28 @@ jobs:
 
     - name: Download CHANNELS_URL
       run: |
-        curl -o channels $(CHANNELS_URL)
+        curl -o channels $CHANNELS_URL
+      env:
+        CHANNELS_URL: 'https://fox.toxic-gang.xyz/tata/channels'
 
     - name: Download HMAC_URL
       run: |
-        curl -o hmac $(HMAC_URL)
+        curl -o hmac $HMAC_URL
+      env:
+        HMAC_URL: 'https://fox.toxic-gang.xyz/tata/hmac'
 
-    - name: Commit and push changes
+    - name: Check for changes
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
         git add channels hmac
-        git commit -m "Update files from URLs"
+        git diff --cached --exit-code || git commit -m "Update files from URLs"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push changes
+      if: success() && steps.check.outputs.changes_detected == 'true'
+      run: |
         git push
       env:
-        CHANNELS_URL: 'https://fox.toxic-gang.xyz/tata/channels'
-        HMAC_URL: 'https://fox.toxic-gang.xyz/tata/hmac'
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
