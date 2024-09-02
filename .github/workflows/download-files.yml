@@ -25,7 +25,7 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "CHANNELS_URL=https://fox.toxic-gang.xyz/tata/channels" >> $GITHUB_ENV
+        echo "CHANNELS_URL=https://babel-in.xyz/babel-b2ef9ad8f0d432962d47009b24dee465/tata/channels" >> $GITHUB_ENV
         echo "HMAC_URL=https://fox.toxic-gang.xyz/tata/hmac" >> $GITHUB_ENV
 
     - name: Ensure files exist
