@@ -30,11 +30,11 @@ jobs:
 
     - name: Ensure files exist
       run: |
-        touch channels hmac
+        touch channels.json hmac
 
     - name: Download CHANNELS_URL
       run: |
-        curl -o channels "${{ env.CHANNELS_URL }}"
+        curl -o channels.json "${{ env.CHANNELS_URL }}"
 
     - name: Download HMAC_URL
       run: |
@@ -48,7 +48,7 @@ jobs:
     - name: Check for changes
       id: check_changes
       run: |
-        git add channels hmac
+        git add channels.json hmac
         git status
         git diff --cached --exit-code || echo "changes_detected=true" >> $GITHUB_ENV
 
