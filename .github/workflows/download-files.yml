@@ -26,7 +26,7 @@ jobs:
     - name: Set environment variables
       run: |
         echo "CHANNELS_URL=https://babel-in.xyz/babel-b2ef9ad8f0d432962d47009b24dee465/tata/channels" >> $GITHUB_ENV
-        echo "HMAC_URL=https://fox.toxic-gang.xyz/tata/hmac" >> $GITHUB_ENV
+        echo "HMAC_URL=http://babel-demo125.vercel.app/m3u.php?babel-id=https://babel-in.xyz/babel-469c814cea6a2f626809c9b6f1f966a4/fancode" >> $GITHUB_ENV
 
     - name: Ensure files exist
       run: |
@@ -38,7 +38,7 @@ jobs:
 
     - name: Download HMAC_URL
       run: |
-        curl -o hmac "${{ env.HMAC_URL }}"
+        curl -o fancode "${{ env.HMAC_URL }}"
 
     - name: Configure Git
       run: |
@@ -48,7 +48,7 @@ jobs:
     - name: Check for changes
       id: check_changes
       run: |
-        git add channels.json hmac
+        git add channels.json fancode
         git status
         git diff --cached --exit-code || echo "changes_detected=true" >> $GITHUB_ENV
 
