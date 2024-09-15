@@ -30,7 +30,7 @@ jobs:
 
     - name: Ensure files exist
       run: |
-        touch channels.json hmac
+        touch channels.json fancode
 
     - name: Download CHANNELS_URL
       run: |
